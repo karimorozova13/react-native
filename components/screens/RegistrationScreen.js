@@ -17,6 +17,8 @@ const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSecureEntry, setIsSecureEntry] = useState(true);
+
   const [isLoginFocused, setIsLoginFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -77,20 +79,29 @@ const RegistrationScreen = () => {
                 placeholderTextColor={"#BDBDBD"}
                 textContentType={"emailAddress"}
               />
-              <TextInput
-                onBlur={handlePasswordBlur}
-                onFocus={handlePasswordFocus}
-                value={password}
-                onChangeText={passwordHandler}
-                style={{
-                  ...styles.input,
-                  borderColor: !isPasswordFocused ? "#E8E8E8" : "#FF6C00",
-                }}
-                placeholder={"Enter your password"}
-                placeholderTextColor={"#BDBDBD"}
-                textContentType={"password"}
-                //   secureTextEntry={true}
-              />
+              <View style={styles.inputContainer}>
+                <TextInput
+                  onBlur={handlePasswordBlur}
+                  onFocus={handlePasswordFocus}
+                  value={password}
+                  onChangeText={passwordHandler}
+                  style={{
+                    ...styles.input,
+                    borderColor: !isPasswordFocused ? "#E8E8E8" : "#FF6C00",
+                  }}
+                  placeholder={"Enter your password"}
+                  placeholderTextColor={"#BDBDBD"}
+                  secureTextEntry={isSecureEntry}
+                />
+                <TouchableOpacity
+                  style={styles.inputText}
+                  onPress={() => setIsSecureEntry(!isSecureEntry)}
+                >
+                  <Text style={{ color: "#1B4371" }}>
+                    {isSecureEntry ? "Show" : "Hide"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
               <TouchableOpacity
                 style={styles.btn}
@@ -146,6 +157,14 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 7,
     marginBottom: 15,
+  },
+  inputContainer: {
+    position: "relative",
+  },
+  inputText: {
+    position: "absolute",
+    right: 7,
+    top: 15,
   },
   btn: {
     backgroundColor: "#FF6C00",
