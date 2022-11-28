@@ -13,7 +13,8 @@ import {
   ImageBackground,
 } from "react-native";
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ navigation, route }) => {
+  const { userName } = route.params;
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,6 +42,7 @@ const RegistrationScreen = () => {
   };
   const onLogin = () => {
     Alert.alert("Welcome, " + `${email} ${password} ${login}`);
+    Keyboard.dismiss();
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -110,7 +112,13 @@ const RegistrationScreen = () => {
               >
                 <Text style={styles.btnText}>Log in</Text>
               </TouchableOpacity>
-              <Text style={styles.register}>Have an account? Log in</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Home");
+                }}
+              >
+                <Text style={styles.register}>Have an account? Log in</Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>

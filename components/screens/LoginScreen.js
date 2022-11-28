@@ -13,11 +13,12 @@ import {
   ImageBackground,
 } from "react-native";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isSecureEntry, setIsSecureEntry] = useState(true);
 
   const handleEmailFocus = () => setIsEmailFocused(true);
   const handleEmailBlur = () => setIsEmailFocused(false);
@@ -32,6 +33,7 @@ const LoginScreen = () => {
   };
   const onLogin = () => {
     Alert.alert("Welcome, " + `${email} ${password}`);
+    Keyboard.dismiss();
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -59,20 +61,29 @@ const LoginScreen = () => {
                 placeholderTextColor={"#BDBDBD"}
                 textContentType={"emailAddress"}
               />
-              <TextInput
-                onBlur={handlePasswordBlur}
-                onFocus={handlePasswordFocus}
-                value={password}
-                onChangeText={passwordHandler}
-                style={{
-                  ...styles.input,
-                  borderColor: !isPasswordFocused ? "#E8E8E8" : "#FF6C00",
-                }}
-                placeholder={"Enter your password"}
-                placeholderTextColor={"#BDBDBD"}
-                textContentType={"password"}
-                //   secureTextEntry={true}
-              />
+              <View style={styles.inputContainer}>
+                <TextInput
+                  onBlur={handlePasswordBlur}
+                  onFocus={handlePasswordFocus}
+                  value={password}
+                  onChangeText={passwordHandler}
+                  style={{
+                    ...styles.input,
+                    borderColor: !isPasswordFocused ? "#E8E8E8" : "#FF6C00",
+                  }}
+                  placeholder={"Enter your password"}
+                  placeholderTextColor={"#BDBDBD"}
+                  secureTextEntry={isSecureEntry}
+                />
+                <TouchableOpacity
+                  style={styles.inputText}
+                  onPress={() => setIsSecureEntry(!isSecureEntry)}
+                >
+                  <Text style={{ color: "#1B4371" }}>
+                    {isSecureEntry ? "Show" : "Hide"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
               <TouchableOpacity
                 style={styles.btn}
@@ -81,7 +92,15 @@ const LoginScreen = () => {
               >
                 <Text style={styles.btnText}>Log in</Text>
               </TouchableOpacity>
-              <Text style={styles.register}>Don't have Account? Register</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Register", { userName: "Kari" });
+                }}
+              >
+                <Text style={styles.register}>
+                  Don't have Account? Register
+                </Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -105,7 +124,7 @@ const styles = StyleSheet.create({
   },
   form: {
     width: 375,
-    backgroundColor: "teal",
+    backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     padding: 32,
@@ -127,6 +146,14 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 7,
     marginBottom: 15,
+  },
+  inputContainer: {
+    position: "relative",
+  },
+  inputText: {
+    position: "absolute",
+    right: 7,
+    top: 15,
   },
   btn: {
     backgroundColor: "#FF6C00",
