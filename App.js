@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
 import RegistrationScreen from "./components/screens/RegistrationScreen";
 import LoginScreen from "./components/screens/LoginScreen";
-import CreateScreen from "./components/screens/CreateScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import Form from "./components/screens/Form";
 import { createStackNavigator } from "@react-navigation/stack";
+import MainScreen from "./components/screens/MainScreen";
 
 const MainStack = createStackNavigator();
 
@@ -14,12 +14,18 @@ export default function App() {
     <>
       {/* <Form /> */}
       <NavigationContainer>
-        <MainStack.Navigator initialRouteName="Login">
+        <MainStack.Navigator initialRouteName="Log in">
           <MainStack.Screen name="Log in" component={LoginScreen} />
-          <MainStack.Screen name="Register" component={RegistrationScreen} />
+          <MainStack.Screen
+            name="Register"
+            component={RegistrationScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
           <MainStack.Screen
             name="Home"
-            component={CreateScreen}
+            component={MainScreen}
             options={{
               title: "Home",
               headerStyle: {

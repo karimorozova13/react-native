@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   Alert,
   Platform,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
@@ -19,11 +20,44 @@ const LoginScreen = ({ navigation }) => {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isSecureEntry, setIsSecureEntry] = useState(true);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [dimensionWidth, setDimensionWidth] = useState(
+    Dimensions.get("window").width
+  );
+  const [dimensionHeight, setDimensionHeight] = useState(
+    Dimensions.get("window").height - 20 * 2
+  );
 
-  const handleEmailFocus = () => setIsEmailFocused(true);
-  const handleEmailBlur = () => setIsEmailFocused(false);
-  const handlePasswordFocus = () => setIsPasswordFocused(true);
-  const handlePasswordBlur = () => setIsPasswordFocused(false);
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width;
+      const height = Dimensions.get("window").height - 20 * 2;
+      setDimensionHeight(height);
+      setDimensionWidth(width);
+      console.log(height);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      // Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
+
+  const handleEmailFocus = () => {
+    setIsEmailFocused(true);
+    setIsKeyboardVisible(true);
+  };
+  const handleEmailBlur = () => {
+    setIsEmailFocused(false);
+    setIsKeyboardVisible(false);
+  };
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(true);
+    setIsKeyboardVisible(true);
+  };
+  const handlePasswordBlur = () => {
+    setIsPasswordFocused(false);
+    setIsKeyboardVisible(false);
+  };
 
   const emailHandler = (text) => {
     setEmail(text);
@@ -32,20 +66,32 @@ const LoginScreen = ({ navigation }) => {
     setPassword(text);
   };
   const onLogin = () => {
-    Alert.alert("Welcome, " + `${email} ${password}`);
+    // Alert.alert("Welcome, " + `${email} ${password}`);
     Keyboard.dismiss();
+    setIsKeyboardVisible(false);
+    navigation.navigate("Home", { userName: "Kari" });
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <ImageBackground
-          style={styles.img}
+          style={{
+            ...styles.img,
+            height: dimensionHeight,
+            width: dimensionWidth,
+          }}
           source={require("../../assets/photo.png")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <View style={styles.form}>
+            <View
+              style={{
+                ...styles.form,
+                marginBottom: isKeyboardVisible ? -70 : 0,
+                paddingBottom: isKeyboardVisible ? 0 : 70,
+              }}
+            >
               <Text style={styles.title}>Log in</Text>
 
               <TextInput
@@ -97,8 +143,17 @@ const LoginScreen = ({ navigation }) => {
                   navigation.navigate("Register", { userName: "Kari" });
                 }}
               >
-                <Text style={styles.register}>
-                  Don't have Account? Register
+                <Text style={{ ...styles.register, color: "#BDBDBD" }}>
+                  Don't have an account?{" "}
+                  <Text
+                    style={{
+                      ...styles.register,
+                      textDecorationLine: "underline",
+                      marginLeft: 5,
+                    }}
+                  >
+                    Register
+                  </Text>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -123,8 +178,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   form: {
-    width: 375,
     backgroundColor: "#fff",
+
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     padding: 32,
@@ -149,6 +204,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     position: "relative",
+    marginBottom: 43,
   },
   inputText: {
     position: "absolute",

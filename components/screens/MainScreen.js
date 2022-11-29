@@ -61,11 +61,12 @@ function Profile() {
 }
 
 const Tabs = createBottomTabNavigator();
-const CreateScreen = () => {
+const MainScreen = ({ route }) => {
+  const { userName } = route.params;
   return (
     <TouchableWithoutFeedback>
       <View style={styles.container}>
-        {/* <Text>Hello World</Text> */}
+        <Text>Hello {userName}!</Text>
         <Tabs.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -94,7 +95,7 @@ const CreateScreen = () => {
   );
 };
 
-export default CreateScreen;
+export default MainScreen;
 
 const styles = StyleSheet.create({
   container: {
