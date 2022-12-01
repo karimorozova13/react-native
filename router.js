@@ -38,21 +38,8 @@ export const useRoute = (isAuth) => {
     <MainTabs.Navigator
       screenOptions={{
         tabBarShowLabel: false,
-        // activeTintColor: "tomato",
-        // inactiveTintColor: "gray",
       }}
     >
-      <MainTabs.Screen
-        name={"Posts"}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused, color, size }) => {
-            return <MaterialIcons name="bug-report" size={35} color="blue" />;
-          },
-        }}
-        component={PostsScreen}
-      />
-
       <MainTabs.Screen
         name={"CreatePosts"}
         options={{
@@ -65,6 +52,17 @@ export const useRoute = (isAuth) => {
         }}
         component={CreatePostsScreen}
       />
+      <MainTabs.Screen
+        name={"Posts"}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return <MaterialIcons name="bug-report" size={35} color="blue" />;
+          },
+        }}
+        component={PostsScreen}
+      />
+
       <MainTabs.Screen
         name={"Profile"}
         options={{

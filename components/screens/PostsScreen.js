@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 
 const COURSES = [
@@ -32,7 +32,17 @@ const Item = ({ title, source }) => {
   );
 };
 
-const PostsScreen = () => {
+const PostsScreen = ({ route }) => {
+  const { photo } = route.params;
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    setPosts((prevState) => [...prevState, route.params.photo]);
+    console.log(posts);
+    return () => {
+      // cleanup
+    };
+  }, [route.params]);
+  console.log(route.params);
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <FlatList
