@@ -7,23 +7,24 @@ const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
-  // console.log(photo);
+
   const toggleCameraType = () => {
     setType((current) =>
       current === CameraType.back ? CameraType.front : CameraType.back
     );
   };
   const savePhoto = () => {
-    console.log(navigation, "navigation");
     navigation.navigate("Posts", { photo });
   };
   const takePhoto = async () => {
     let photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
   };
+
   useEffect(() => {
     requestPermission();
   }, []);
+
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={setCamera}>
