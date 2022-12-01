@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Camera, CameraType } from "expo-camera";
+import * as Location from "expo-location";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [type, setType] = useState(CameraType.back);
@@ -17,12 +18,22 @@ const CreatePostsScreen = ({ navigation }) => {
     navigation.navigate("Posts", { photo });
   };
   const takePhoto = async () => {
-    let photo = await camera.takePictureAsync();
+    const location = await Location.getCurrentPositionAsync();
+    console.log("latitude", location.coords.latitude);
+    console.log("longitude", location.coords.longitude);
+
+    const photo = await camera.takePictureAsync();
+    console.log(location);
     setPhoto(photo.uri);
   };
 
   useEffect(() => {
     requestPermission();
+    // async () => {
+    //   let { status } = await Location.requestForegroundPermissionsAsync();
+    //   console.log(status);
+    //   console.log(33);
+    // };
   }, []);
 
   return (

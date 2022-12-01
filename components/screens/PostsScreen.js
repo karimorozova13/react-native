@@ -15,18 +15,20 @@ const PostsScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={posts}
-        renderItem={({ item }) => (
-          <View style={{ alignContent: "center", marginBottom: 5 }}>
-            <Image
-              source={{ uri: item }}
-              style={{ height: 200, marginHorizontal: 20 }}
-            />
-          </View>
-        )}
-        keyExtractor={(item, idx) => idx.toString()}
-      />
+      {posts.length && (
+        <FlatList
+          data={posts}
+          renderItem={({ item }) => (
+            <View style={{ alignContent: "center", marginBottom: 5 }}>
+              <Image
+                source={{ uri: item }}
+                style={{ height: 200, marginHorizontal: 20 }}
+              />
+            </View>
+          )}
+          keyExtractor={(item, idx) => idx.toString()}
+        />
+      )}
     </View>
   );
 };
