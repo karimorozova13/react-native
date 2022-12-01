@@ -84,7 +84,8 @@ const RegistrationScreen = ({ navigation, route }) => {
     // Alert.alert("Welcome, " + `${email} ${password} ${login}`);
     Keyboard.dismiss();
     setIsKeyboardVisible(false);
-    navigation.navigate("Home", { userName: "Kari" });
+    navigation.navigate("Log in");
+    // navigation.navigate("Home", { userName: "Kari" });
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -170,7 +171,7 @@ const RegistrationScreen = ({ navigation, route }) => {
                 activeOpacity={0.8}
                 onPress={onLogin}
               >
-                <Text style={styles.btnText}>Log in</Text>
+                <Text style={styles.btnText}>Register</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     right: -10,
     bottom: 15,
     borderColor: "orange",
-    borderRadius: "50%",
+    borderRadius: 50,
     borderWidth: 1,
     width: 25,
     height: 25,

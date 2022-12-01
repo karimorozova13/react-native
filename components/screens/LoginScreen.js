@@ -69,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
     // Alert.alert("Welcome, " + `${email} ${password}`);
     Keyboard.dismiss();
     setIsKeyboardVisible(false);
-    navigation.navigate("Home", { userName: "Kari" });
+    navigation.navigate("PostsScreen", { userName: "Kari" });
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
