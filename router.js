@@ -7,11 +7,11 @@ import { Ionicons } from "@expo/vector-icons";
 const MainStack = createStackNavigator();
 const MainTabs = createBottomTabNavigator();
 
-import CreatePostsScreen from "./components/screens/MainScreens/CreatePostsScreen";
-import LoginScreen from "./components/screens/AuthScreens/LoginScreen";
-import PostsScreen from "./components/screens/MainScreens/PostsScreen";
-import ProfileScreen from "./components/screens/MainScreens/ProfileScreen";
-import RegistrationScreen from "./components/screens/AuthScreens/RegistrationScreen";
+import CreatePostsScreen from "./screens/mainScreens/CreatePostsScreen";
+import LoginScreen from "./screens/authScreens/LoginScreen";
+import PostsScreen from "./screens/mainScreens/PostsScreen";
+import ProfileScreen from "./screens/mainScreens/ProfileScreen";
+import RegistrationScreen from "./screens/authScreens/RegistrationScreen";
 
 export const useRoute = (isAuth) => {
   if (!isAuth) {
