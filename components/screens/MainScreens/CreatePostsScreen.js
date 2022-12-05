@@ -15,16 +15,21 @@ const CreatePostsScreen = ({ navigation }) => {
     );
   };
   const savePhoto = () => {
-    navigation.navigate("Posts", { photo });
+    console.log(photo);
+    navigation.navigate("Posts", {
+      screen: "DefaultScreen",
+      params: { photo },
+    });
   };
   const takePhoto = async () => {
     const location = await Location.getCurrentPositionAsync();
     console.log("latitude", location.coords.latitude);
     console.log("longitude", location.coords.longitude);
+    console.log(location, "location");
 
     const photo = await camera.takePictureAsync();
-    console.log(location);
     setPhoto(photo.uri);
+    console.log(photo, "photo");
   };
 
   useEffect(() => {

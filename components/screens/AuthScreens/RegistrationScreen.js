@@ -13,14 +13,44 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-const LoginScreen = ({ navigation }) => {
+const RegistrationScreen = ({ navigation, route }) => {
+  const { userName } = route.params;
+  const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSecureEntry, setIsSecureEntry] = useState(true);
+
+  const [isLoginFocused, setIsLoginFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-  const [isSecureEntry, setIsSecureEntry] = useState(true);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  const handleLoginFocus = () => {
+    setIsLoginFocused(true);
+    setIsKeyboardVisible(true);
+  };
+  const handleLoginBlur = () => {
+    setIsLoginFocused(false);
+    setIsKeyboardVisible(false);
+  };
+  const handleEmailFocus = () => {
+    setIsEmailFocused(true);
+    setIsKeyboardVisible(true);
+  };
+  const handleEmailBlur = () => {
+    setIsEmailFocused(false);
+    setIsKeyboardVisible(false);
+  };
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(true);
+    setIsKeyboardVisible(true);
+  };
+  const handlePasswordBlur = () => {
+    setIsPasswordFocused(false);
+    setIsKeyboardVisible(false);
+  };
   const [dimensionWidth, setDimensionWidth] = useState(
     Dimensions.get("window").width
   );
@@ -41,24 +71,9 @@ const LoginScreen = ({ navigation }) => {
       // Dimensions.removeEventListener("change", onChange);
     };
   }, []);
-
-  const handleEmailFocus = () => {
-    setIsEmailFocused(true);
-    setIsKeyboardVisible(true);
+  const loginHandler = (text) => {
+    setLogin(text);
   };
-  const handleEmailBlur = () => {
-    setIsEmailFocused(false);
-    setIsKeyboardVisible(false);
-  };
-  const handlePasswordFocus = () => {
-    setIsPasswordFocused(true);
-    setIsKeyboardVisible(true);
-  };
-  const handlePasswordBlur = () => {
-    setIsPasswordFocused(false);
-    setIsKeyboardVisible(false);
-  };
-
   const emailHandler = (text) => {
     setEmail(text);
   };
@@ -66,10 +81,11 @@ const LoginScreen = ({ navigation }) => {
     setPassword(text);
   };
   const onLogin = () => {
-    // Alert.alert("Welcome, " + `${email} ${password}`);
+    // Alert.alert("Welcome, " + `${email} ${password} ${login}`);
     Keyboard.dismiss();
     setIsKeyboardVisible(false);
-    navigation.navigate("PostsScreen", { userName: "Kari" });
+    navigation.navigate("Log in");
+    // navigation.navigate("Home", { userName: "Kari" });
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -77,10 +93,10 @@ const LoginScreen = ({ navigation }) => {
         <ImageBackground
           style={{
             ...styles.img,
-            height: dimensionHeight,
+            // height: dimensionHeight,
             width: dimensionWidth,
           }}
-          source={require("../../assets/photo.png")}
+          source={require("../../../assets/photo.png")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -88,17 +104,36 @@ const LoginScreen = ({ navigation }) => {
             <View
               style={{
                 ...styles.form,
-                marginBottom: isKeyboardVisible ? -70 : 0,
-                paddingBottom: isKeyboardVisible ? 0 : 70,
+                marginBottom: isKeyboardVisible ? -120 : 0,
               }}
             >
-              <Text style={styles.title}>Log in</Text>
-
+              <View style={styles.imgBox}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.icon}
+                  onPress={() => console.log(33)}
+                >
+                  <Ionicons name={"ios-add"} size={13} color={"orange"} />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.title}>Register</Text>
               <TextInput
-                value={email}
-                onChangeText={emailHandler}
+                onBlur={handleLoginBlur}
+                onFocus={handleLoginFocus}
+                value={login}
+                onChangeText={loginHandler}
+                style={{
+                  ...styles.input,
+                  borderColor: !isLoginFocused ? "#E8E8E8" : "#FF6C00",
+                }}
+                placeholder={"Login"}
+                placeholderTextColor={"#BDBDBD"}
+              />
+              <TextInput
                 onBlur={handleEmailBlur}
                 onFocus={handleEmailFocus}
+                value={email}
+                onChangeText={emailHandler}
                 style={{
                   ...styles.input,
                   borderColor: !isEmailFocused ? "#E8E8E8" : "#FF6C00",
@@ -136,23 +171,28 @@ const LoginScreen = ({ navigation }) => {
                 activeOpacity={0.8}
                 onPress={onLogin}
               >
-                <Text style={styles.btnText}>Log in</Text>
+                <Text style={styles.btnText}>Register</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Register", { userName: "Kari" });
+                  navigation.navigate("Log in");
                 }}
               >
-                <Text style={{ ...styles.register, color: "#BDBDBD" }}>
-                  Don't have an account?{" "}
+                <Text
+                  style={{
+                    ...styles.register,
+                    color: "#BDBDBD",
+                  }}
+                >
+                  Have an account?
                   <Text
                     style={{
                       ...styles.register,
                       textDecorationLine: "underline",
-                      marginLeft: 5,
+                      marginLeft: 15,
                     }}
                   >
-                    Register
+                    Log In
                   </Text>
                 </Text>
               </TouchableOpacity>
@@ -164,25 +204,47 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
+export default RegistrationScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   img: {
     flex: 1,
-    resizeMode: "cover",
+    resizeMode: "contain",
     justifyContent: "flex-end",
   },
   form: {
+    position: "relative",
     backgroundColor: "#fff",
-
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     padding: 32,
+    paddingTop: 92,
+  },
+  imgBox: {
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    position: "absolute",
+    borderRadius: 16,
+    left: 125,
+    top: -60,
+  },
+  icon: {
+    position: "absolute",
+    right: -10,
+    bottom: 15,
+    borderColor: "orange",
+    borderRadius: 50,
+    borderWidth: 1,
+    width: 25,
+    height: 25,
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     textAlign: "center",
