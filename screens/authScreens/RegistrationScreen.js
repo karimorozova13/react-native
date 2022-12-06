@@ -15,8 +15,15 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+const initialState = {
+  email: "",
+  password: "",
+  login: "",
+};
+
 const RegistrationScreen = ({ navigation, route }) => {
   const { userName } = route.params;
+  const [credentials, setCredentials] = useState(initialState);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -84,7 +91,9 @@ const RegistrationScreen = ({ navigation, route }) => {
     // Alert.alert("Welcome, " + `${email} ${password} ${login}`);
     Keyboard.dismiss();
     setIsKeyboardVisible(false);
-    navigation.navigate("Log in");
+    console.log(credentials);
+    setCredentials(initialState);
+    // navigation.navigate("Log in");
     // navigation.navigate("Home", { userName: "Kari" });
   };
   return (
@@ -120,8 +129,14 @@ const RegistrationScreen = ({ navigation, route }) => {
               <TextInput
                 onBlur={handleLoginBlur}
                 onFocus={handleLoginFocus}
-                value={login}
-                onChangeText={loginHandler}
+                value={credentials.login}
+                onChangeText={(text) => {
+                  console.log(33);
+                  setCredentials((prevState) => ({
+                    ...prevState,
+                    login: text,
+                  }));
+                }}
                 style={{
                   ...styles.input,
                   borderColor: !isLoginFocused ? "#E8E8E8" : "#FF6C00",
@@ -132,8 +147,13 @@ const RegistrationScreen = ({ navigation, route }) => {
               <TextInput
                 onBlur={handleEmailBlur}
                 onFocus={handleEmailFocus}
-                value={email}
-                onChangeText={emailHandler}
+                value={credentials.email}
+                onChangeText={(text) => {
+                  setCredentials((prevState) => ({
+                    ...prevState,
+                    email: text,
+                  }));
+                }}
                 style={{
                   ...styles.input,
                   borderColor: !isEmailFocused ? "#E8E8E8" : "#FF6C00",
@@ -146,8 +166,13 @@ const RegistrationScreen = ({ navigation, route }) => {
                 <TextInput
                   onBlur={handlePasswordBlur}
                   onFocus={handlePasswordFocus}
-                  value={password}
-                  onChangeText={passwordHandler}
+                  value={credentials.password}
+                  onChangeText={(text) => {
+                    setCredentials((prevState) => ({
+                      ...prevState,
+                      password: text,
+                    }));
+                  }}
                   style={{
                     ...styles.input,
                     borderColor: !isPasswordFocused ? "#E8E8E8" : "#FF6C00",
